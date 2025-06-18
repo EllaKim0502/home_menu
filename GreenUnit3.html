@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vocabulary Quiz - Unit 3</title>
+  <title>Vocabulary Quiz - Vocabulary Workshop Green - Unit 3</title>
   <style>
     body {
+
       font-family: sans-serif;
       font-size: 22px;
       margin: 0;
@@ -49,6 +50,7 @@
         <button type="button" onclick="prevQuestion()">Previous</button>
         <button type="button" onclick="submitAnswer()">Submit</button>
         <button type="button" onclick="nextQuestion()">Next</button>
+        <button type="button" onclick="restartQuiz()">Start Over</button>
       </div>
     </form>
     <div id="score" style="margin-top:20px;"></div>
@@ -125,6 +127,14 @@
         current--;
         showQuestion();
       }
+    }
+
+    function restartQuiz() {
+      current = 0;
+      score = 0;
+      answered = Array(quizData.length).fill(false);
+      document.getElementById("score").innerHTML = "";
+      showQuestion();
     }
 
     showQuestion();
