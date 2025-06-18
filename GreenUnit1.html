@@ -2,129 +2,141 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Quiz Page - Vocabulary Workshop Green - Unit 1</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vocabulary Quiz - Vocabulary Workshop Green - Unit 1</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      max-width: 700px;
-      margin: 0 auto;
+      font-family: sans-serif;
+      font-size: 22px;
+      margin: 0;
       padding: 20px;
+      background: #fefefe;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .quiz-container {
+      width: 100%;
+      max-width: 600px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
     }
     .question {
       margin-bottom: 20px;
     }
-    .question h3 {
-      margin-bottom: 10px;
+    .option {
+      margin-bottom: 12px;
+      display: block;
     }
-    .submit-button {
-      padding: 10px 20px;
-      font-size: 16px;
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .navigation {
+      margin-top: 20px;
+      text-align: center;
+    }
+    button {
+      font-size: 18px;
+      padding: 10px 15px;
+      margin: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>Vocabulary Quiz</h1>
-  <form id="quiz-form">
-    <div class="question">
-      <h3>1. If you _____________ tacos to pizza, you like tacos better.</h3>
-      <input type="radio" name="q1" value="force"> a. force<br>
-      <input type="radio" name="q1" value="prefer"> b. prefer<br>
-      <input type="radio" name="q1" value="trace"> c. trace<br>
+  <div class="quiz-container">
+    <h2 style="font-size: 26px; text-align: center;">Vocabulary Workshop Green – Unit 1</h2>
+    <div id="quiz"></div>
+    <div class="navigation">
+      <button onclick="prevQuestion()">Previous</button>
+      <button onclick="submitAnswer()">Submit</button>
+      <button onclick="nextQuestion()">Next</button>
+      <button onclick="restartQuiz()">Start Over</button>
     </div>
-
-    <div class="question">
-      <h3>2. A soccer field has a _________________ on each end.</h3>
-      <input type="radio" name="q2" value="goal"> a. goal<br>
-      <input type="radio" name="q2" value="trace"> b. trace<br>
-      <input type="radio" name="q2" value="patient"> c. patient<br>
-    </div>
-
-    <div class="question">
-      <h3>3. When many people have the same name, the name is _______________.</h3>
-      <input type="radio" name="q3" value="common"> a. common<br>
-      <input type="radio" name="q3" value="faint"> b. faint<br>
-      <input type="radio" name="q3" value="firm"> c. firm<br>
-    </div>
-
-    <div class="question">
-      <h3>4. If your parents __________ you to stay up late, they give you permission to do so.</h3>
-      <input type="radio" name="q4" value="trace"> a. trace<br>
-      <input type="radio" name="q4" value="force"> b. force<br>
-      <input type="radio" name="q4" value="allow"> c. allow<br>
-    </div>
-
-    <div class="question">
-      <h3>5. A _______________ person may feel angry because of a bad experience.</h3>
-      <input type="radio" name="q5" value="firm"> a. firm<br>
-      <input type="radio" name="q5" value="bitter"> b. bitter<br>
-      <input type="radio" name="q5" value="common"> c. common<br>
-    </div>
-
-    <div class="question">
-      <h3>6. To be ____________ is to be calm and understanding.</h3>
-      <input type="radio" name="q6" value="bitter"> a. bitter<br>
-      <input type="radio" name="q6" value="faint"> b. faint<br>
-      <input type="radio" name="q6" value="patient"> c. patient<br>
-    </div>
-
-    <div class="question">
-      <h3>7. ______________ pencil marks are light and difficult to see.</h3>
-      <input type="radio" name="q7" value="faint"> a. faint<br>
-      <input type="radio" name="q7" value="patient"> b. patient<br>
-      <input type="radio" name="q7" value="firm"> c. firm<br>
-    </div>
-
-    <div class="question">
-      <h3>8. If you ___________________ open a box, you use your strength to get inside it.</h3>
-      <input type="radio" name="q8" value="force"> a. force<br>
-      <input type="radio" name="q8" value="faint"> b. faint<br>
-      <input type="radio" name="q8" value="trace"> c. trace<br>
-    </div>
-
-    <div class="question">
-      <h3>9. About twenty-five people work at the ________________.</h3>
-      <input type="radio" name="q9" value="firm"> a. firm<br>
-      <input type="radio" name="q9" value="goal"> b. goal<br>
-      <input type="radio" name="q9" value="patient"> c. patient<br>
-    </div>
-
-    <div class="question">
-      <h3>10. When you _______________ a design, you draw over its lines on another sheet of paper.</h3>
-      <input type="radio" name="q10" value="allow"> a. allow<br>
-      <input type="radio" name="q10" value="trace"> b. trace<br>
-      <input type="radio" name="q10" value="prefer"> c. prefer<br>
-    </div>
-
-    <input type="submit" class="submit-button" value="Submit Quiz">
-  </form>
+    <div id="score" style="margin-top:20px; text-align: center;"></div>
+  </div>
 
   <script>
-    document.getElementById("quiz-form").addEventListener("submit", function(event) {
-      event.preventDefault();
+    const quizData = [
+      { q: "1. If you _____________ tacos to pizza, you like tacos better.", a: "prefer", options: ["force", "prefer", "trace"] },
+      { q: "2. A soccer field has a _________________ on each end.", a: "goal", options: ["goal", "trace", "patient"] },
+      { q: "3. When many people have the same name, the name is _______________.", a: "common", options: ["common", "faint", "firm"] },
+      { q: "4. If your parents __________ you to stay up late, they give you permission to do so.", a: "allow", options: ["trace", "force", "allow"] },
+      { q: "5. A _______________ person may feel angry because of a bad experience.", a: "bitter", options: ["firm", "bitter", "common"] },
+      { q: "6. To be ____________ is to be calm and understanding,", a: "patient", options: ["bitter", "faint", "patient"] },
+      { q: "7. ______________ pencil marks are light and difficult to see.", a: "faint", options: ["faint", "patient", "firm"] },
+      { q: "8. If you ___________________ open a box, you use your strength to get inside it.", a: "force", options: ["force", "faint", "trace"] },
+      { q: "9. About twenty-five people work at the ________________", a: "firm", options: ["firm", "goal", "patient"] },
+      { q: "10. When you _______________ a design, you draw over its lines on another sheet of paper.", a: "trace", options: ["allow", "trace", "prefer"] }
+    ];
 
-      let score = 0;
-      const answers = {
-        q1: "prefer",
-        q2: "goal",
-        q3: "common",
-        q4: "allow",
-        q5: "bitter",
-        q6: "patient",
-        q7: "faint",
-        q8: "force",
-        q9: "firm",
-        q10: "trace"
-      };
+    let current = 0;
+    let score = 0;
+    let answered = Array(quizData.length).fill(false);
 
-      for (const q in answers) {
-        const selected = document.querySelector(`input[name="${q}"]:checked`);
-        if (selected && selected.value === answers[q]) {
+    function showQuestion() {
+      const q = quizData[current];
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = `<div class="question">${q.q}</div>` + q.options.map((opt, i) =>
+        `<label class="option"><input type="radio" name="q" value="${opt}"> ${opt}</label>`).join('') +
+        `<div id="feedback" class="feedback"></div>`;
+    }
+
+    function submitAnswer() {
+      const selected = document.querySelector('input[name="q"]:checked');
+      const feedback = document.getElementById("feedback");
+      if (!selected) {
+        feedback.textContent = "Please select an answer.";
+        feedback.style.color = "orange";
+        return;
+      }
+      const answer = selected.value;
+      const correct = quizData[current].a;
+
+      if (answer === correct) {
+        feedback.textContent = "✅ Correct!";
+        feedback.style.color = "green";
+        if (!answered[current]) {
           score++;
+          answered[current] = true;
         }
+      } else {
+        feedback.textContent = `❌ Incorrect. Correct answer: ${correct}`;
+        feedback.style.color = "red";
       }
 
-      alert("You got " + score + " out of 10 correct!");
-    });
+      if (current === quizData.length - 1) {
+        document.getElementById("score").innerHTML = `<strong>Quiz Over! Your score: ${score}/${quizData.length}</strong>`;
+      }
+    }
+
+    function nextQuestion() {
+      if (current < quizData.length - 1) {
+        current++;
+        showQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (current > 0) {
+        current--;
+        showQuestion();
+      }
+    }
+
+    function restartQuiz() {
+      current = 0;
+      score = 0;
+      answered = Array(quizData.length).fill(false);
+      document.getElementById("score").innerHTML = "";
+      showQuestion();
+    }
+
+    showQuestion();
   </script>
 </body>
 </html>
+
