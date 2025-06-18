@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .question h3 {
+      margin-bottom: 10px;
+    }
+    .submit-button {
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Vocabulary Quiz</h1>
+  <form id="quiz-form">
+    <div class="question">
+      <h3>1. To ______________ a house is to destroy it.</h3>
+      <input type="radio" name="q1" value="ruin"> a. ruin<br>
+      <input type="radio" name="q1" value="aim"> b. aim<br>
+      <input type="radio" name="q1" value="drift"> c. drift<br>
+    </div>
+
+    <div class="question">
+      <h3>2. A __________________ is a path from one place to another.</h3>
+      <input type="radio" name="q2" value="pause"> a. pause<br>
+      <input type="radio" name="q2" value="defeat"> b. defeat<br>
+      <input type="radio" name="q2" value="route"> c. route<br>
+    </div>
+
+    <div class="question">
+      <h3>3. When you _____________ a video, you stop it for a little while.</h3>
+      <input type="radio" name="q3" value="aim"> a. aim<br>
+      <input type="radio" name="q3" value="ruin"> b. ruin<br>
+      <input type="radio" name="q3" value="pause"> c. pause<br>
+    </div>
+
+    <div class="question">
+      <h3>4. To ________________ is to float away.</h3>
+      <input type="radio" name="q4" value="pause"> a. pause<br>
+      <input type="radio" name="q4" value="drift"> b. drift<br>
+      <input type="radio" name="q4" value="defeat"> c. defeat<br>
+    </div>
+
+    <div class="question">
+      <h3>5. ______________ weather is warm and pleasant.</h3>
+      <input type="radio" name="q5" value="aware"> a. aware<br>
+      <input type="radio" name="q5" value="solid"> b. solid<br>
+      <input type="radio" name="q5" value="mild"> c. mild<br>
+    </div>
+
+    <div class="question">
+      <h3>6. When you shoot a basketball, you should _______________ for the hoop.</h3>
+      <input type="radio" name="q6" value="refuse"> a. refuse<br>
+      <input type="radio" name="q6" value="aim"> b. aim<br>
+      <input type="radio" name="q6" value="pause"> c. pause<br>
+    </div>
+
+    <div class="question">
+      <h3>7. Ice is the _____________ form of water.</h3>
+      <input type="radio" name="q7" value="solid"> a. solid<br>
+      <input type="radio" name="q7" value="aware"> b. aware<br>
+      <input type="radio" name="q7" value="mild"> c. mild<br>
+    </div>
+
+    <div class="question">
+      <h3>8. If you are ______________ of the danger, you know about it.</h3>
+      <input type="radio" name="q8" value="mild"> a. mild<br>
+      <input type="radio" name="q8" value="solid"> b. solid<br>
+      <input type="radio" name="q8" value="aware"> c. aware<br>
+    </div>
+
+    <div class="question">
+      <h3>9. When you _____________ someone in checkers, you win the game.</h3>
+      <input type="radio" name="q9" value="aim"> a. aim<br>
+      <input type="radio" name="q9" value="defeat"> b. defeat<br>
+      <input type="radio" name="q9" value="refuse"> c. refuse<br>
+    </div>
+
+    <div class="question">
+      <h3>10. If you _____________ to answer a question, you do not answer it.</h3>
+      <input type="radio" name="q10" value="refuse"> a. refuse<br>
+      <input type="radio" name="q10" value="defeat"> b. defeat<br>
+      <input type="radio" name="q10" value="pause"> c. pause<br>
+    </div>
+
+    <input type="submit" class="submit-button" value="Submit Quiz">
+  </form>
+
+  <script>
+    document.getElementById("quiz-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      let score = 0;
+      const answers = {
+        q1: "ruin",
+        q2: "route",
+        q3: "pause",
+        q4: "drift",
+        q5: "mild",
+        q6: "aim",
+        q7: "solid",
+        q8: "aware",
+        q9: "defeat",
+        q10: "refuse"
+      };
+
+      for (const q in answers) {
+        const selected = document.querySelector(`input[name="${q}"]:checked`);
+        if (selected && selected.value === answers[q]) {
+          score++;
+        }
+      }
+
+      alert("You got " + score + " out of 10 correct!");
+    });
+  </script>
+</body>
+</html>
