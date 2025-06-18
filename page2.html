@@ -1,12 +1,186 @@
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>메뉴 2: 퀴즈</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vocabulary Workshop Purple – Unit 2</title>
+  <style>
+    body { font-family: sans-serif; font-size: 22px; margin: 0; padding: 20px; background: #fefefe; }
+    .quiz-container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); }
+    .question { margin-bottom: 20px; }
+    .option { margin-bottom: 12px; display: block; }
+    .feedback { margin-top: 10px; font-weight: bold; }
+    .navigation { margin-top: 20px; }
+    button { font-size: 18px; padding: 10px 15px; margin-right: 10px; }
+  </style>
 </head>
 <body>
-  <h1>퀴즈 페이지</h1>
-  <p>퀴즈 내용을 여기에 넣어보세요.</p>
+  <div class="quiz-container">
+    <h2 style="font-size: 26px;">Vocabulary Workshop Purple – Unit 2</h2>
+    <div id="quiz"></div>
+    <div class="navigation">
+      <button onclick="prevQuestion()">Previous</button>
+      <button onclick="submitAnswer()">Submit</button>
+      <button onclick="nextQuestion()">Next</button>
+    </div>
+    <div id="score" style="margin-top:20px;"></div>
+  </div>
+
+  <script>
+    const quizData = [
+  {
+    "q": "1. Every Sunday, my mom and I _______ to the shore.",
+    "a": "travel",
+    "options": [
+      "frown",
+      "crowd",
+      "fresh",
+      "travel"
+    ]
+  },
+  {
+    "q": "2. We like the smell of the _______ sea air.",
+    "a": "fresh",
+    "options": [
+      "frown",
+      "signal",
+      "fresh",
+      "bench"
+    ]
+  },
+  {
+    "q": "3. To get to the other side of the bay, visitors _______ a drawbridge.",
+    "a": "cross",
+    "options": [
+      "bench",
+      "deep",
+      "cross",
+      "signal"
+    ]
+  },
+  {
+    "q": "4. If a tall boat sails near the bridge, don\u2019t _______!",
+    "a": "worry",
+    "options": [
+      "crowd",
+      "deep",
+      "bench",
+      "worry"
+    ]
+  },
+  {
+    "q": "5. A flashing red _______ stops the traffic.",
+    "a": "signal",
+    "options": [
+      "worry",
+      "signal",
+      "deep",
+      "cross"
+    ]
+  },
+  {
+    "q": "6. The boat can pass when the _______ is raised.",
+    "a": "bridge",
+    "options": [
+      "bench",
+      "bridge",
+      "worry",
+      "fresh"
+    ]
+  },
+  {
+    "q": "7. Once the bridge goes down, the _______ goes over.",
+    "a": "crowd",
+    "options": [
+      "travel",
+      "bench",
+      "fresh",
+      "crowd"
+    ]
+  },
+  {
+    "q": "8. I sit on a _______ and watch the boats.",
+    "a": "bench",
+    "options": [
+      "crowd",
+      "cross",
+      "bench",
+      "deep"
+    ]
+  },
+  {
+    "q": "9. Some people catch fish in the _______ waters.",
+    "a": "deep",
+    "options": [
+      "deep",
+      "bridge",
+      "fresh",
+      "frown"
+    ]
+  },
+  {
+    "q": "10. The only time I _______ is when we have to leave.",
+    "a": "frown",
+    "options": [
+      "frown",
+      "worry",
+      "fresh",
+      "signal"
+    ]
+  }
+];
+
+    let current = 0;
+    let score = 0;
+    let answered = Array(quizData.length).fill(false);
+
+    function showQuestion() {
+      const q = quizData[current];
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = `<div class="question">${q.q}</div>` + q.options.map((opt, i) =>
+        `<label class="option"><input type="radio" name="q" value="${opt}"> ${opt}</label>`).join('') +
+        `<div id="feedback" class="feedback"></div>`;
+    }
+
+    function submitAnswer() {
+      const selected = document.querySelector('input[name="q"]:checked');
+      if (!selected) return;
+      const answer = selected.value;
+      const correct = quizData[current].a;
+      const feedback = document.getElementById("feedback");
+
+      if (answer === correct) {
+        feedback.textContent = "✅ Correct!";
+        if (!answered[current]) {
+          score++;
+          answered[current] = true;
+        }
+      } else {
+        feedback.textContent = "❌ Try again!";
+      }
+
+      if (current === quizData.length - 1) {
+        document.getElementById("score").innerHTML = `<strong>Quiz Over! Your score: ${score}/${quizData.length}</strong>`;
+      }
+    }
+
+    function nextQuestion() {
+      if (current < quizData.length - 1) {
+        current++;
+        showQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (current > 0) {
+        current--;
+        showQuestion();
+      }
+    }
+
+    showQuestion();
+  </script>
   <a href="index.html">← 메인 페이지로 돌아가기</a>
 </body>
 </html>
