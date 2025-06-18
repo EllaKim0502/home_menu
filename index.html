@@ -2,10 +2,30 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>메인 페이지</title>
+  <title>English Home - Password Protected</title>
+  <script>
+    function checkPassword() {
+      const password = document.getElementById("password").value;
+      if (password === "abc123") {
+        document.getElementById("menu").style.display = "block";
+        document.getElementById("lock").style.display = "none";
+      } else {
+        alert("Incorrect password. Try again.");
+      }
+    }
+  </script>
 </head>
 <body>
-  <h1>메뉴 선택</h1>
+  <h1>Welcome to English Home</h1>
+
+  <div id="lock">
+    <p>Please enter the password to continue:</p>
+    <input type="password" id="password" />
+    <button onclick="checkPassword()">Enter</button>
+  </div>
+
+  <div id="menu" style="display:none;">
+    <h2>Menu</h2>
   <ul>
     <li><a href="page1.html">메뉴 1: Vocabulary Workshop Purple Unit 1</a></li>
     <li><a href="page2.html">메뉴 2: Vocabulary Workshop Purple Unit 2</a></li>
