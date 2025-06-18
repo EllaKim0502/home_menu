@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vocabulary Quiz - Unit 3</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      font-size: 22px;
+      margin: 0;
+      padding: 20px;
+      background: #fefefe;
+    }
+    .quiz-container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .feedback {
+      margin-top: 5px;
+      font-weight: bold;
+    }
+    input[type="radio"] {
+      margin-right: 10px;
+    }
+    .navigation {
+      margin-top: 20px;
+    }
+    button {
+      font-size: 18px;
+      padding: 10px 15px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2 style="font-size: 26px;">Vocabulary Quiz – Unit 3</h2>
+    <form id="quiz-form">
+      <div id="quiz"></div>
+      <div class="navigation">
+        <button type="button" onclick="prevQuestion()">Previous</button>
+        <button type="button" onclick="submitAnswer()">Submit</button>
+        <button type="button" onclick="nextQuestion()">Next</button>
+      </div>
+    </form>
+    <div id="score" style="margin-top:20px;"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      { q: "1. To be ____________ to your country is to be faithful to it.", options: ["active", "loyal", "sensitive"], a: "loyal" },
+      { q: "2. When you _______________ your tasks, you change them.", options: ["gasp", "wander", "vary"], a: "vary" },
+      { q: "3. A source of useful materials is a __________________.", options: ["resource", "gasp", "bargain"], a: "resource" },
+      { q: "4. If you ___________________ off without thinking, you can get lost.", options: ["gasp", "struggle", "wander"], a: "wander" },
+      { q: "5. To ______________ is to take in a deep breath.", options: ["bargain", "gasp", "vary"], a: "gasp" },
+      { q: "6. Soccer is a(n) _________________ sport because the players run a lot.", options: ["loyal", "sensitive", "active"], a: "active" },
+      { q: "7. The worth of a car will tell you its ______________.", options: ["struggle", "resource", "value"], a: "value" },
+      { q: "8. ______________ people can get their feelings hurt easily.", options: ["sensitive", "active", "loyal"], a: "sensitive" },
+      { q: "9. When you ______________ for something, you often end up paying a lower price.", options: ["vary", "bargain", "wander"], a: "bargain" },
+      { q: "10. To work at a new and difficult job can be a ___________________.", options: ["gasp", "value", "struggle"], a: "struggle" }
+    ];
+
+    let current = 0;
+    let score = 0;
+    let answered = Array(quizData.length).fill(false);
+
+    function showQuestion() {
+      const q = quizData[current];
+      const quizDiv = document.getElementById("quiz");
+      const options = q.options.map((opt, idx) => {
+        return `<label><input type="radio" name="answer" value="${opt}"> ${String.fromCharCode(97 + idx)}. ${opt}</label><br>`;
+      }).join("");
+      quizDiv.innerHTML = `
+        <div class="question">${q.q}</div>
+        ${options}
+        <div id="feedback" class="feedback"></div>
+      `;
+    }
+
+    function submitAnswer() {
+      const selected = document.querySelector('input[name="answer"]:checked');
+      const feedback = document.getElementById("feedback");
+      if (!selected) {
+        feedback.textContent = "Please select an answer.";
+        feedback.style.color = "orange";
+        return;
+      }
+      const answer = selected.value;
+      const correct = quizData[current].a;
+
+      if (answer === correct) {
+        feedback.textContent = "✅ Correct!";
+        feedback.style.color = "green";
+        if (!answered[current]) {
+          score++;
+          answered[current] = true;
+        }
+      } else {
+        feedback.textContent = `❌ Incorrect. Correct answer: ${correct}`;
+        feedback.style.color = "red";
+      }
+
+      if (current === quizData.length - 1) {
+        document.getElementById("score").innerHTML = `<strong>Quiz Over! Your score: ${score}/${quizData.length}</strong>`;
+      }
+    }
+
+    function nextQuestion() {
+      if (current < quizData.length - 1) {
+        current++;
+        showQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (current > 0) {
+        current--;
+        showQuestion();
+      }
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>
