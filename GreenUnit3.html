@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -6,16 +6,19 @@
   <title>Vocabulary Quiz - Vocabulary Workshop Green - Unit 3</title>
   <style>
     body {
-
       font-family: sans-serif;
       font-size: 22px;
       margin: 0;
       padding: 20px;
       background: #fefefe;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
     .quiz-container {
+      width: 100%;
       max-width: 600px;
-      margin: auto;
       background: #fff;
       padding: 20px;
       border-radius: 10px;
@@ -24,50 +27,50 @@
     .question {
       margin-bottom: 20px;
     }
-    .feedback {
-      margin-top: 5px;
-      font-weight: bold;
+    .option {
+      margin-bottom: 12px;
+      display: block;
     }
-    input[type="radio"] {
-      margin-right: 10px;
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
     }
     .navigation {
       margin-top: 20px;
+      text-align: center;
     }
     button {
       font-size: 18px;
       padding: 10px 15px;
-      margin-right: 10px;
+      margin: 10px;
     }
   </style>
 </head>
 <body>
   <div class="quiz-container">
-    <h2 style="font-size: 26px;">Vocabulary Quiz – Unit 3</h2>
-    <form id="quiz-form">
-      <div id="quiz"></div>
-      <div class="navigation">
-        <button type="button" onclick="prevQuestion()">Previous</button>
-        <button type="button" onclick="submitAnswer()">Submit</button>
-        <button type="button" onclick="nextQuestion()">Next</button>
-        <button type="button" onclick="restartQuiz()">Start Over</button>
-      </div>
-    </form>
-    <div id="score" style="margin-top:20px;"></div>
+    <h2 style="font-size: 26px; text-align: center;">Vocabulary Workshop Green – Unit 3</h2>
+    <div id="quiz"></div>
+    <div class="navigation">
+      <button onclick="prevQuestion()">Previous</button>
+      <button onclick="submitAnswer()">Submit</button>
+      <button onclick="nextQuestion()">Next</button>
+      <button onclick="restartQuiz()">Start Over</button>
+    </div>
+    <div id="score" style="margin-top:20px; text-align: center;"></div>
   </div>
 
   <script>
     const quizData = [
-      { q: "1. To be ____________ to your country is to be faithful to it.", options: ["active", "loyal", "sensitive"], a: "loyal" },
-      { q: "2. When you _______________ your tasks, you change them.", options: ["gasp", "wander", "vary"], a: "vary" },
-      { q: "3. A source of useful materials is a __________________.", options: ["resource", "gasp", "bargain"], a: "resource" },
-      { q: "4. If you ___________________ off without thinking, you can get lost.", options: ["gasp", "struggle", "wander"], a: "wander" },
-      { q: "5. To ______________ is to take in a deep breath.", options: ["bargain", "gasp", "vary"], a: "gasp" },
-      { q: "6. Soccer is a(n) _________________ sport because the players run a lot.", options: ["loyal", "sensitive", "active"], a: "active" },
-      { q: "7. The worth of a car will tell you its ______________.", options: ["struggle", "resource", "value"], a: "value" },
-      { q: "8. ______________ people can get their feelings hurt easily.", options: ["sensitive", "active", "loyal"], a: "sensitive" },
-      { q: "9. When you ______________ for something, you often end up paying a lower price.", options: ["vary", "bargain", "wander"], a: "bargain" },
-      { q: "10. To work at a new and difficult job can be a ___________________.", options: ["gasp", "value", "struggle"], a: "struggle" }
+      { q: "1. To be ______ to your country is to be faithful to it.", a: "loyal", options: ["active", "loyal", "sensitive"] },
+      { q: "2. When you ______ your tasks, you change them.", a: "vary", options: ["gasp", "wander", "vary"] },
+      { q: "3. A source of useful materials is a _______.", a: "resource", options: ["resource", "gasp", "bargain"] },
+      { q: "4. If you ______ off without thinking, you can get lost.", a: "wander", options: ["gasp", "struggle", "wander"] },
+      { q: "5. To _____ is to take in a deep breath.", a: "gasp", options: ["bargain", "gasp", "vary"] },
+      { q: "6. Soccer is a(n) ______ sport because the players run a lot.", a: "active", options: ["loyal", "sensitive", "active"] },
+      { q: "7. The worth of a car will tell you its _____.", a: "value", options: ["struggle", "resource", "value"] },
+      { q: "8. ____ people can get their feelings hurt easily.", a: "sensitive", options: ["sensitive", "active", "loyal"] },
+      { q: "9. When you ______ for something, you often end up paying a lower price.", a: "bargain", options: ["vary", "bargain", "wander"] },
+      { q: "10. To work at a new and difficult job can be a _____.", a: "struggle", options: ["gasp", "value", "struggle"] }
     ];
 
     let current = 0;
@@ -77,18 +80,13 @@
     function showQuestion() {
       const q = quizData[current];
       const quizDiv = document.getElementById("quiz");
-      const options = q.options.map((opt, idx) => {
-        return `<label><input type="radio" name="answer" value="${opt}"> ${String.fromCharCode(97 + idx)}. ${opt}</label><br>`;
-      }).join("");
-      quizDiv.innerHTML = `
-        <div class="question">${q.q}</div>
-        ${options}
-        <div id="feedback" class="feedback"></div>
-      `;
+      quizDiv.innerHTML = `<div class="question">${q.q}</div>` + q.options.map((opt, i) =>
+        `<label class="option"><input type="radio" name="q" value="${opt}"> ${opt}</label>`).join('') +
+        `<div id="feedback" class="feedback"></div>`;
     }
 
     function submitAnswer() {
-      const selected = document.querySelector('input[name="answer"]:checked');
+      const selected = document.querySelector('input[name="q"]:checked');
       const feedback = document.getElementById("feedback");
       if (!selected) {
         feedback.textContent = "Please select an answer.";
@@ -139,6 +137,6 @@
 
     showQuestion();
   </script>
-   <a href="index.html">← 메인 페이지로 돌아가기</a>
 </body>
 </html>
+
