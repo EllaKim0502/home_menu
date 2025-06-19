@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vocabulary Workshop Purple – Unit 13</title>
+  <style>
+    body { font-family: sans-serif; font-size: 22px; margin: 0; padding: 20px; background: #fefefe; }
+    .quiz-container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); }
+    .question { margin-bottom: 20px; }
+    .option { margin-bottom: 12px; display: block; }
+    .feedback { margin-top: 10px; font-weight: bold; }
+    .navigation { margin-top: 20px; }
+    button { font-size: 18px; padding: 10px 15px; margin-right: 10px; }
+  </style>
+</head>
+<body>
+
+
+  <div class="quiz-container">
+    <h2 style="font-size: 26px;">Vocabulary Workshop Purple – Unit 13</h2>
+    <div id="quiz"></div>
+    <div class="navigation">
+      <button onclick="prevQuestion()">Previous</button>
+      <button onclick="submitAnswer()">Submit</button>
+      <button onclick="nextQuestion()">Next</button>
+      <button onclick="startOver()">Start Over</button>
+    </div>
+    <div id="score" style="margin-top:20px;"></div>
+  </div>
+
+  <script>
+    const quizData = [
+  {
+    "q": "1. It is not _____ to mail a package.",
+    "a": "difficult",
+    "options": [
+      "whole",
+      "relax",
+      "expert",
+      "difficult"
+    ]
+  },
+  {
+    "q": "2. Here is how to send one like an _____",
+    "a": "expert",
+    "options": [
+      "address",
+      "stamp",
+      "expert",
+      "difficult"
+    ]
+  },
+  {
+    "q": "3. Follow these steps and there will be no _____ for problems.",
+    "a": "excuse",
+    "options": [
+      "address",
+      "section",
+      "hollow",
+      "excuse"
+    ]
+  },
+  {
+    "q": "4. First, put the _____ set of objects in a large box.",
+    "a": "whole",
+    "options": [
+      "difficult",
+      "hollow",
+      "expert",
+      "whole"
+    ]
+  },
+  {
+    "q": "5. Fill in any _____ spaces with crumpled newspaper.",
+    "a": "hollow",
+    "options": [
+      "address",
+      "hollow",
+      "relax",
+      "accept"
+    ]
+  },
+  {
+    "q": "6. Tape the box well to close it. Write the _____ on top.",
+    "a": "address",
+    "options": [
+      "address",
+      "relax",
+      "expert",
+      "accept"
+    ]
+  },
+  {
+    "q": "7. Find the upper right _____ on the top of the box.",
+    "a": "section",
+    "options": [
+      "hollow",
+      "section",
+      "relax",
+      "expert"
+    ]
+  },
+  {
+    "q": "8. That is where the _____ or postage sticker will go.",
+    "a": "stamp",
+    "options": [
+      "hollow",
+      "stamp",
+      "accept",
+      "whole"
+    ]
+  },
+  {
+    "q": "9. Take the package to the post office and _____.",
+    "a": "relax",
+    "options": [
+      "address",
+      "relax",
+      "section",
+      "whole"
+    ]
+  },
+  {
+    "q": "10. In a few days, the person should receive and _____ the package.",
+    "a": "accept",
+    "options": [
+      "accept",
+      "hollow",
+      "address",
+      "relax"
+    ]
+  }
+];
+
+    let current = 0;
+    let score = 0;
+    let answered = Array(quizData.length).fill(false);
+
+    function showQuestion() {
+      const q = quizData[current];
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = `<div class="question">${q.q}</div>` + q.options.map((opt, i) =>
+        `<label class="option"><input type="radio" name="q" value="${opt}"> ${opt}</label>`).join('') +
+        `<div id="feedback" class="feedback"></div>`;
+    }
+
+    function submitAnswer() {
+      const selected = document.querySelector('input[name="q"]:checked');
+      if (!selected) return;
+      const answer = selected.value;
+      const correct = quizData[current].a;
+      const feedback = document.getElementById("feedback");
+
+      if (answer === correct) {
+        feedback.textContent = "✅ Correct!";
+        if (!answered[current]) {
+          score++;
+          answered[current] = true;
+        }
+      } else {
+        feedback.textContent = "❌ Try again!";
+      }
+
+      if (current === quizData.length - 1) {
+        document.getElementById("score").innerHTML = `<strong>Quiz Over! Your score: ${score}/${quizData.length}</strong>`;
+      }
+    }
+
+    function nextQuestion() {
+      if (current < quizData.length - 1) {
+        current++;
+        showQuestion();
+
+function startOver() {
+  current = 0;
+  score = 0;
+  answered = Array(quizData.length).fill(false);
+  document.getElementById("score").innerHTML = "";
+  showQuestion();
+}
+
+      }
+    }
+
+    function prevQuestion() {
+      if (current > 0) {
+        current--;
+        showQuestion();
+
+function startOver() {
+  current = 0;
+  score = 0;
+  answered = Array(quizData.length).fill(false);
+  document.getElementById("score").innerHTML = "";
+  showQuestion();
+}
+
+      }
+    }
+
+    showQuestion();
+
+function startOver() {
+  current = 0;
+  score = 0;
+  answered = Array(quizData.length).fill(false);
+  document.getElementById("score").innerHTML = "";
+  showQuestion();
+}
+
+  </script>
+
+<div style="text-align: center; margin-top: 40px;">
+  <a href="PurpleMenu.html" style="font-size: 18px; color: #4CAF50; text-decoration: none; border: 2px solid #4CAF50; padding: 8px 16px; border-radius: 5px;">🏠 Go to Menu</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vocabulary Workshop Purple – Unit 5</title>
+  <style>
+    body { font-family: sans-serif; font-size: 22px; margin: 0; padding: 20px; background: #fefefe; }
+    .quiz-container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); }
+    .question { margin-bottom: 20px; }
+    .option { margin-bottom: 12px; display: block; }
+    .feedback { margin-top: 10px; font-weight: bold; }
+    .navigation { margin-top: 20px; }
+    button { font-size: 18px; padding: 10px 15px; margin-right: 10px; }
+  </style>
+</head>
+<body>
+
+
+  <div class="quiz-container">
+    <h2 style="font-size: 26px;">Vocabulary Workshop Purple – Unit 5</h2>
+    <div id="quiz"></div>
+    <div class="navigation">
+      <button onclick="prevQuestion()">Previous</button>
+      <button onclick="submitAnswer()">Submit</button>
+      <button onclick="nextQuestion()">Next</button>
+      <button onclick="startOver()">Start Over</button>
+    </div>
+    <div id="score" style="margin-top:20px;"></div>
+  </div>
+
+  <script>
+    const quizData = [
+  {
+    "q": "1. The chicks sleep for an ____, and then they wake up.",
+    "a": "hour",
+    "options": [
+      "warn",
+      "hour",
+      "flour",
+      "chew"
+    ]
+  },
+  {
+    "q": "2. They can see the ____ moon in the sky.",
+    "a": "pale",
+    "options": [
+      "inn",
+      "chew",
+      "pale",
+      "warn"
+    ]
+  },
+  {
+    "q": "3. They find tiny specks of white ____ on the trail.",
+    "a": "flour",
+    "options": [
+      "flour",
+      "hour",
+      "pale",
+      "chew"
+    ]
+  },
+  {
+    "q": "4. They begin to ____ on the tiny grains.",
+    "a": "nibble",
+    "options": [
+      "inn",
+      "nibble",
+      "hour",
+      "flour"
+    ]
+  },
+  {
+    "q": "5. The chicks walk through the dark ____",
+    "a": "forest",
+    "options": [
+      "chew",
+      "inn",
+      "bright",
+      "forest"
+    ]
+  },
+  {
+    "q": "6. They pass by an ____ where people are sleeping.",
+    "a": "inn",
+    "options": [
+      "warn",
+      "pale",
+      "nibble",
+      "inn"
+    ]
+  },
+  {
+    "q": "7. Then they see an ____ in the middle of the lake.",
+    "a": "island",
+    "options": [
+      "forest",
+      "hour",
+      "nibble",
+      "island"
+    ]
+  },
+  {
+    "q": "8. They can see a garden full of corn in the ____ light.",
+    "a": "bright",
+    "options": [
+      "pale",
+      "bright",
+      "chew",
+      "nibble"
+    ]
+  },
+  {
+    "q": "9. Signs ____ the chicks of foxes on the island.",
+    "a": "warn",
+    "options": [
+      "nibble",
+      "warn",
+      "hour",
+      "pale"
+    ]
+  },
+  {
+    "q": "10. The chicks would love to ____ the corn.",
+    "a": "chew",
+    "options": [
+      "island",
+      "nibble",
+      "chew",
+      "warn"
+    ]
+  }
+];
+
+    let current = 0;
+    let score = 0;
+    let answered = Array(quizData.length).fill(false);
+
+    function showQuestion() {
+      const q = quizData[current];
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = `<div class="question">${q.q}</div>` + q.options.map((opt, i) =>
+        `<label class="option"><input type="radio" name="q" value="${opt}"> ${opt}</label>`).join('') +
+        `<div id="feedback" class="feedback"></div>`;
+    }
+
+    function submitAnswer() {
+      const selected = document.querySelector('input[name="q"]:checked');
+      if (!selected) return;
+      const answer = selected.value;
+      const correct = quizData[current].a;
+      const feedback = document.getElementById("feedback");
+
+      if (answer === correct) {
+        feedback.textContent = "✅ Correct!";
+        if (!answered[current]) {
+          score++;
+          answered[current] = true;
+        }
+      } else {
+        feedback.textContent = "❌ Try again!";
+      }
+
+      if (current === quizData.length - 1) {
+        document.getElementById("score").innerHTML = `<strong>Quiz Over! Your score: ${score}/${quizData.length}</strong>`;
+      }
+    }
+
+    function nextQuestion() {
+      if (current < quizData.length - 1) {
+        current++;
+        showQuestion();
+
+function startOver() {
+  current = 0;
+  score = 0;
+  answered = Array(quizData.length).fill(false);
+  document.getElementById("score").innerHTML = "";
+  showQuestion();
+}
+
+      }
+    }
+
+    function prevQuestion() {
+      if (current > 0) {
+        current--;
+        showQuestion();
+
+function startOver() {
+  current = 0;
+  score = 0;
+  answered = Array(quizData.length).fill(false);
+  document.getElementById("score").innerHTML = "";
+  showQuestion();
+}
+
+      }
+    }
+
+    showQuestion();
+
+function startOver() {
+  current = 0;
+  score = 0;
+  answered = Array(quizData.length).fill(false);
+  document.getElementById("score").innerHTML = "";
+  showQuestion();
+}
+
+  </script>
+
+<div style="text-align: center; margin-top: 40px;">
+  <a href="PurpleMenu.html" style="font-size: 18px; color: #4CAF50; text-decoration: none; border: 2px solid #4CAF50; padding: 8px 16px; border-radius: 5px;">🏠 Go to Menu</a>
+</div>
+
+</body>
+</html>

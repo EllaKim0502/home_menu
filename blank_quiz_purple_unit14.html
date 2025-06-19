@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vocabulary Workshop Purple – Unit 14</title>
+  <style>
+    body { font-family: sans-serif; font-size: 22px; margin: 0; padding: 20px; background: #fefefe; }
+    .quiz-container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); }
+    .question { margin-bottom: 20px; }
+    .option { margin-bottom: 12px; display: block; }
+    .feedback { margin-top: 10px; font-weight: bold; }
+    .navigation { margin-top: 20px; }
+    button { font-size: 18px; padding: 10px 15px; margin-right: 10px; }
+  </style>
+</head>
+<body>
+
+
+  <div class="quiz-container">
+    <h2 style="font-size: 26px;">Vocabulary Workshop Purple – Unit 14</h2>
+    <div id="quiz"></div>
+    <div class="navigation">
+      <button onclick="prevQuestion()">Previous</button>
+      <button onclick="submitAnswer()">Submit</button>
+      <button onclick="nextQuestion()">Next</button>
+      <button onclick="startOver()">Start Over</button>
+    </div>
+    <div id="score" style="margin-top:20px;"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      { q: "1. A plane’s emergency landing turned a _____ into a hero.", a: "passenger", options: ["passenger", "object", "beam", "tool"] },
+      { q: "2. The woman did an important _____ that saved the day.", a: "task", options: ["task", "village", "team", "excuse"] },
+      { q: "3. It was a good thing she read the manual to _____", a: "prepare", options: ["prepare", "protect", "whisper", "squeeze"] },
+      { q: "4. She was ready for the _____ job of opening the emergency back door.", a: "major", options: ["major", "steep", "rare", "basic"] },
+      { q: "5. A flight attendant did a _____ thing at the front of the plane.", a: "similar", options: ["similar", "slender", "gentle", "weak"] },
+      { q: "6. The woman had to _____ a panel from the wall.", a: "separate", options: ["separate", "select", "scatter", "skip"] },
+      { q: "7. She could then turn the _____ to unlock the door.", a: "handle", options: ["handle", "carve", "beam", "knob"] },
+      { q: "8. Even though she was _____, she could lift the door.", a: "slender", options: ["slender", "solid", "curious", "bitter"] },
+      { q: "9. Finally, she was able to _____ an escape slide.", a: "attach", options: ["attach", "glide", "carry", "aim"] },
+      { q: "10. All of the people on the plane _____ what she did.", a: "admire", options: ["admire", "accept", "pause", "signal"] }
+    ];
+
+    let current = 0;
+    let score = 0;
+    let answered = Array(quizData.length).fill(false);
+
+    function showQuestion() {
+      const q = quizData[current];
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = `<div class="question">${q.q}</div>` + q.options.map((opt, i) =>
+        `<label class="option"><input type="radio" name="q" value="${opt}"> ${opt}</label>`).join('') +
+        `<div id="feedback" class="feedback"></div>`;
+    }
+
+    function submitAnswer() {
+      const selected = document.querySelector('input[name="q"]:checked');
+      if (!selected) return;
+      const answer = selected.value;
+      const correct = quizData[current].a;
+      const feedback = document.getElementById("feedback");
+
+      if (answer === correct) {
+        feedback.textContent = "✅ Correct!";
+        if (!answered[current]) {
+          score++;
+          answered[current] = true;
+        }
+      } else {
+        feedback.textContent = "❌ Try again!";
+      }
+
+      if (current === quizData.length - 1) {
+        document.getElementById("score").innerHTML = `<strong>Quiz Over! Your score: ${score}/${quizData.length}</strong>`;
+      }
+    }
+
+    function nextQuestion() {
+      if (current < quizData.length - 1) {
+        current++;
+        showQuestion();
+
+function startOver() {
+  current = 0;
+  score = 0;
+  answered = Array(quizData.length).fill(false);
+  document.getElementById("score").innerHTML = "";
+  showQuestion();
+}
+
+      }
+    }
+
+    function prevQuestion() {
+      if (current > 0) {
+        current--;
+        showQuestion();
+
+function startOver() {
+  current = 0;
+  score = 0;
+  answered = Array(quizData.length).fill(false);
+  document.getElementById("score").innerHTML = "";
+  showQuestion();
+}
+
+      }
+    }
+
+    showQuestion();
+
+function startOver() {
+  current = 0;
+  score = 0;
+  answered = Array(quizData.length).fill(false);
+  document.getElementById("score").innerHTML = "";
+  showQuestion();
+}
+
+  </script>
+
+<div style="text-align: center; margin-top: 40px;">
+  <a href="PurpleMenu.html" style="font-size: 18px; color: #4CAF50; text-decoration: none; border: 2px solid #4CAF50; padding: 8px 16px; border-radius: 5px;">🏠 Go to Menu</a>
+</div>
+
+</body>
+</html>
