@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Word Meanings - Unit 2</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      line-height: 2.5;
+      max-width: 800px;
+      margin: auto;
+      font-size: 20px;
+    }
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    button {
+      font-size: 16px;
+      padding: 10px 20px;
+    }
+    h3 {
+      margin-top: 40px;
+    }
+    .headword {
+      background-color: yellow;
+      font-weight: bold;
+    }
+    .sentence {
+      display: block;
+    }
+    .highlight {
+      background-color: lightblue;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Vocabulary Workshop Purple - UNIT 2</h2>
+  <h3>Word Meanings</h3>
+
+  <div class="button-group">
+    <button id="readBtn" onclick="toggleReading()">▶️ Start Reading</button>
+    <audio id="audio" src="2-The-Cable-Car-is-Coming.mp3"></audio>
+    <button id="mp3Btn" onclick="toggleAudio()">🔊 Play MP3</button>
+    <button onclick="window.open('https://www.sadlierconnect.com/anonymous/view-resource/@vw21?limitProgramTocIds=&productId=1057&programSeriesId=117&programTocId=6604&resourceId=272299&hash=dW5kZWZpbmVk', '_blank')">🌐 Visit the Site</button>
+  </div>
+
+  <p id="content"></p>
+
+  <script>
+    const sentenceData = [
+      { word: 'bench', pos: 'noun', def: 'A bench is a long seat for a few people to sit on.', example: 'On each side of the picnic table is a wooden bench.' },
+      { word: 'bridge', pos: 'noun', def: 'A bridge is something that is built above and across water. People or cars can go over it to get to the other side.', example: 'A long bridge goes over the boy.' },
+      { word: 'cross', pos: 'verb', def: 'When you cross, you go from one side to the other.', example: 'Look both ways when you cross the street.' },
+      { word: 'cross', pos: 'adjective', def: 'A person is cross if he or she is angry or not pleased.', example: 'The child was cross when the dog grabbed his toy.' },
+      { word: 'crowd', pos: 'noun', def: 'A crowd is a lot of people all together in one place.', example: 'A large crowd waits for the bus.' },
+      { word: 'deep', pos: 'adjective', def: 'If something is deep, it goes a long way down.', example: 'The children dug a deep hole in the sand.' },
+      { word: 'fresh', pos: 'adjective', def: 'If something is fresh, it is clean or new.', example: 'I put on a fresh shirt for the party.' },
+      { word: 'fresh', pos: 'adjective', def: 'Fresh means that something is cool or refreshing.', example: 'Open the windows so the fresh air can cool off the room.' },
+      { word: 'frown', pos: 'verb', def: 'When you frown, you move your eyebrows together and wrinkle your forehead.', example: 'I frown when I have to go to bed early.' },
+      { word: 'frown', pos: 'noun', def: 'A frown is an unhappy look on your face.', example: 'When Nate found his lost puppy, his frown became a smile.' },
+      { word: 'signal', pos: 'noun', def: 'A signal is an action or sign that sends a message.', example: 'The red light is a signal that means “stop.”' },
+      { word: 'travel', pos: 'verb', def: 'When you travel, you go from one place to another.', example: 'I want to travel all over the world.' },
+      { word: 'worry', pos: 'verb', def: 'When you worry, you feel that something bad may happen.', example: 'My mom and dad worry if I don’t eat well.' }
+    ];
+
+    const contentDiv = document.getElementById('content');
+    let sentenceIndex = 0;
+    const sentences = [];
+
+    sentenceData.forEach((item, i) => {
+      const def = document.createElement('span');
+      def.className = 'sentence';
+      def.id = `s${sentenceIndex}`;
+      def.innerHTML = `${i + 1}. <span class="headword">${item.word}</span> (${item.pos}) ${item.def}`;
+      contentDiv.appendChild(def);
+      sentences.push({ id: def.id, text: `${item.word}. ${item.def}` });
+      sentenceIndex++;
+
+      const ex = document.createElement('span');
+      ex.className = 'sentence';
+      ex.id = `s${sentenceIndex}`;
+      ex.innerHTML = item.example.replace(new RegExp(item.word, 'gi'), '<strong>' + item.word + '</strong>');
+      contentDiv.appendChild(ex);
+      sentences.push({ id: ex.id, text: item.example });
+      sentenceIndex++;
+    });
+
+    let current = 0;
+    let isReading = false;
+
+    function speakSentence(index) {
+      const synth = window.speechSynthesis;
+
+      function loadVoicesAndSpeak() {
+        const voices = synth.getVoices();
+        const femaleVoice = voices.find(v => v.lang === 'en-US' && v.name.toLowerCase().includes('female')) ||
+                             voices.find(v => v.lang === 'en-US' && v.name.toLowerCase().includes('english')) ||
+                             voices.find(v => v.lang.startsWith('en'));
+
+        const utterance = new SpeechSynthesisUtterance(sentences[index].text);
+        if (femaleVoice) utterance.voice = femaleVoice;
+
+        utterance.onstart = () => {
+          document.getElementById(sentences[index].id).classList.add('highlight');
+        };
+        utterance.onend = () => {
+          document.getElementById(sentences[index].id).classList.remove('highlight');
+          current++;
+          if (isReading && current < sentences.length) {
+            speakSentence(current);
+          } else {
+            isReading = false;
+            document.getElementById('readBtn').textContent = '▶️ Start Reading';
+          }
+        };
+
+        synth.speak(utterance);
+      }
+
+      if (synth.getVoices().length === 0) {
+        synth.onvoiceschanged = loadVoicesAndSpeak;
+      } else {
+        loadVoicesAndSpeak();
+      }
+    }
+
+    function toggleReading() {
+      const synth = window.speechSynthesis;
+      if (isReading) {
+        synth.cancel();
+        isReading = false;
+        document.getElementById('readBtn').textContent = '▶️ Start Reading';
+      } else {
+        current = 0;
+        isReading = true;
+        document.getElementById('readBtn').textContent = '⏹️ Stop Reading';
+        speakSentence(current);
+      }
+    }
+
+    function toggleAudio() {
+      const audio = document.getElementById('audio');
+      const mp3Btn = document.getElementById('mp3Btn');
+      if (audio.paused) {
+        audio.play();
+        mp3Btn.textContent = '⏹️ Stop MP3';
+      } else {
+        audio.pause();
+        audio.currentTime = 0;
+        mp3Btn.textContent = '🔊 Play MP3';
+      }
+    }
+  </script>
+
+</body>
+</html>
