@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Vocabulary Workshop Purple - Unit 14</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fffaf0;
+      padding: 20px;
+      text-align: center;
+    }
+    .question-box {
+      background: #000;
+      color: white;
+      padding: 15px;
+      font-size: 22px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+    .option {
+      background: white;
+      margin: 8px auto;
+      padding: 12px 20px;
+      border: 2px solid #ccc;
+      border-radius: 20px;
+      width: 80%;
+      max-width: 400px;
+      font-size: 18px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: background 0.3s;
+    }
+    .option span {
+      display: inline-block;
+      font-weight: bold;
+      border: 2px solid black;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+      margin-right: 15px;
+    }
+    .option:hover {
+      background: #f0f8ff;
+    }
+    .option.selected {
+      background: #d0e7ff;
+    }
+    .feedback {
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .nav-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+      background: #87cefa;
+      cursor: pointer;
+    }
+    .menu-link {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 16px;
+      text-decoration: none;
+      color: #007acc;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Vocabulary Workshop Purple - Unit 14</h1>
+  <div class="question-box" id="questionBox">Loading...</div>
+  <div id="optionsContainer"></div>
+  <div class="feedback" id="feedback"></div>
+  <button class="nav-btn" onclick="nextQuestion()">Next ➡</button>
+  <button class="nav-btn" onclick="restartQuiz()">🔄 Restart Quiz</button>
+  <br>
+  <a class="menu-link" href="PurpleMenu_WordQuiz.html">← Go to Menu</a>
+
+  <script>
+    const questions = [
+  { def: "to think highly of someone or something", correct: "admire", choices: ["admire", "attach", "major"] },
+  { def: "to join or connect one thing to another", correct: "attach", choices: ["attach", "select", "relax"] },
+  { def: "to deal with or take care of something", correct: "handle", choices: ["handle", "task", "admire"] },
+  { def: "very important or large in size or number", correct: "major", choices: ["major", "similar", "proper"] },
+  { def: "someone riding in a car, train, or bus", correct: "passenger", choices: ["passenger", "leader", "hero"] },
+  { def: "to get ready", correct: "prepare", choices: ["prepare", "notice", "relax"] },
+  { def: "not joined or kept together", correct: "separate", choices: ["separate", "slender", "famous"] },
+  { def: "almost the same", correct: "similar", choices: ["similar", "major", "feast"] },
+  { def: "thin and narrow", correct: "slender", choices: ["slender", "bare", "relax"] },
+  { def: "a piece of work or job to be done", correct: "task", choices: ["task", "feast", "search"] }
+];
+
+    let current = 0;
+    let score = 0;
+
+    function showQuestion() {
+      const q = questions[current];
+      const questionBox = document.getElementById("questionBox");
+      const container = document.getElementById("optionsContainer");
+      const feedback = document.getElementById("feedback");
+      questionBox.innerText = q.def;
+      feedback.innerText = "";
+      container.innerHTML = "";
+
+      const shuffledChoices = q.choices
+        .map(value => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value);
+
+      shuffledChoices.forEach((choice, i) => {
+        const label = String.fromCharCode(65 + i);
+        const btn = document.createElement("div");
+        btn.className = "option";
+        btn.innerHTML = `<span>${label}</span> ${choice}`;
+        btn.onclick = () => {
+          const allOptions = container.querySelectorAll(".option");
+          allOptions.forEach(opt => opt.classList.remove("selected"));
+          btn.classList.add("selected");
+
+          if (choice === q.correct) {
+            feedback.innerText = "✅ Correct!";
+            feedback.style.color = "green";
+            score++;
+          } else {
+            feedback.innerText = `❌ Wrong! The correct answer is ${q.correct}.`;
+            feedback.style.color = "red";
+          }
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function nextQuestion() {
+      current++;
+      if (current < questions.length) {
+        showQuestion();
+      } else {
+        document.getElementById("questionBox").innerText = "🎉 The quiz is over!";
+        document.getElementById("optionsContainer").innerHTML = "";
+        document.getElementById("feedback").innerText = `✅ Your score: ${score} out of ${questions.length}`;
+      }
+    }
+
+    function restartQuiz() {
+      current = 0;
+      score = 0;
+      showQuestion();
+    }
+
+    window.onload = showQuestion;
+  </script>
+
+</body>
+</html>
