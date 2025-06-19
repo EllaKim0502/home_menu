@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vocabulary Workshop Green - Unit 18</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      font-size: 22px;
+      margin: 0;
+      padding: 0;
+      background: #fefefe;
+    }
+    .quiz-container {
+      width: 100%;
+      max-width: 700px;
+      background: #fff;
+      padding: 10px;
+      margin: 0 auto;
+      margin-top: 30px;
+      border-radius: 10px;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .option {
+      margin-bottom: 12px;
+      display: block;
+    }
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .navigation {
+      margin-top: 20px;
+      text-align: center;
+    }
+    button {
+      font-size: 18px;
+      padding: 10px 15px;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2 style="font-size: 26px; text-align: center; margin: 0 0 50px 0;">Vocabulary Workshop Green – Unit 18</h2>
+    <div id="quiz"></div>
+    <div class="navigation">
+      <button onclick="prevQuestion()">Previous</button>
+      <button onclick="submitAnswer()">Submit</button>
+      <button onclick="nextQuestion()">Next</button>
+      <button onclick="restartQuiz()">Start Over</button>
+    </div>
+    <div id="score" style="margin-top:10px; text-align: center;"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      { q: "1. If you put money into something that will earn more money, you _____ it.", a: "invest", options: ["invest", "ripple", "boast"] },
+      { q: "2. To brag is also to _____.", a: "boast", options: ["glisten", "locate", "boast"] },
+      { q: "3. When you find something, you _____ it.", a: "locate", options: ["locate", "invest", "ripple"] },
+      { q: "4. A well-spoken person can be described as _____.", a: "eloquent", options: ["ideal", "infectious", "eloquent"] },
+      { q: "5. A(n) _____ is a small wave.", a: "ripple", options: ["uproar", "ripple", "boast"] },
+      { q: "6. To have a(n) _____ amount is to have as much as you need.", a: "sufficient", options: ["eloquent", "infectious", "sufficient"] },
+      { q: "7. A disease that can be caught by others is said to be _____.", a: "infectious", options: ["infectious", "sufficient", "ideal"] },
+      { q: "8. Something that is _____ is considered to be perfect.", a: "ideal", options: ["eloquent", "sufficient", "ideal"] },
+      { q: "9. If you cause a(n) _____, you create much excitement.", a: "uproar", options: ["uproar", "boast", "ripple"] },
+      { q: "10. When an object shines, it might _____.", a: "glisten", options: ["locate", "glisten", "invest"] }
+    ];
+
+    let current = 0;
+    let score = 0;
+    let answered = Array(quizData.length).fill(false);
+
+    function showQuestion() {
+      const q = quizData[current];
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = `<div class="question">${q.q}</div>` + q.options.map((opt, i) =>
+        `<label class="option"><input type="radio" name="q" value="${opt}"> ${opt}</label>`).join('') +
+        `<div id="feedback" class="feedback"></div>`;
+    }
+
+    function submitAnswer() {
+      const selected = document.querySelector('input[name="q"]:checked');
+      const feedback = document.getElementById("feedback");
+      if (!selected) {
+        feedback.textContent = "Please select an answer.";
+        feedback.style.color = "orange";
+        return;
+      }
+      const answer = selected.value;
+      const correct = quizData[current].a;
+
+      if (answer === correct) {
+        feedback.textContent = "✅ Correct!";
+        feedback.style.color = "green";
+        if (!answered[current]) {
+          score++;
+          answered[current] = true;
+        }
+      } else {
+        feedback.textContent = `❌ Incorrect. Correct answer: ${correct}`;
+        feedback.style.color = "red";
+      }
+
+      if (current === quizData.length - 1) {
+        document.getElementById("score").innerHTML = `<strong>Quiz Over! Your score: ${score}/${quizData.length}</strong>`;
+      }
+    }
+
+    function nextQuestion() {
+      if (current < quizData.length - 1) {
+        current++;
+        showQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (current > 0) {
+        current--;
+        showQuestion();
+      }
+    }
+
+    function restartQuiz() {
+      current = 0;
+      score = 0;
+      answered = Array(quizData.length).fill(false);
+      document.getElementById("score").innerHTML = "";
+      showQuestion();
+    }
+
+    showQuestion();
+  </script>
+  
+<div style="text-align: center; margin: 40px 0;">
+  <a href="GreenMenu.html" style="font-size: 18px; color: #2e7d32; text-decoration: none; border: 2px solid #2e7d32; padding: 10px 20px; border-radius: 6px;">🏠 Go to Menu</a>
+</div>
+
+</body>
+</html>

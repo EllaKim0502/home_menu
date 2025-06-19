@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vocabulary Workshop Green - Unit 10</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      font-size: 22px;
+      margin: 0;
+      padding: 0;
+      background: #fefefe;
+    }
+    .quiz-container {
+      width: 100%;
+      max-width: 700px;
+      background: #fff;
+      padding: 10px;
+      margin: 0 auto;
+      margin-top: 30px;
+      border-radius: 10px;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .option {
+      margin-bottom: 12px;
+      display: block;
+    }
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .navigation {
+      margin-top: 20px;
+      text-align: center;
+    }
+    button {
+      font-size: 18px;
+      padding: 10px 15px;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2 style="font-size: 26px; text-align: center; margin: 0 0 50px 0;">Vocabulary Workshop Green – Unit 10</h2>
+    <div id="quiz"></div>
+    <div class="navigation">
+      <button onclick="prevQuestion()">Previous</button>
+      <button onclick="submitAnswer()">Submit</button>
+      <button onclick="nextQuestion()">Next</button>
+      <button onclick="restartQuiz()">Start Over</button>
+    </div>
+    <div id="score" style="margin-top:20px; text-align: center;"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      { q: "1. A _____ is a design that repeats.", a: "pattern", options: ["wit", "brink", "pattern"] },
+      { q: "2. Something that is true or real is _____.", a: "actual", options: ["actual", "vibrant", "fortunate"] },
+      { q: "3. You might look over the _____ of a riverbank to look for fish.", a: "brink", options: ["brink", "chill", "fury"] },
+      { q: "4. A funny person is also sometimes called a _____.", a: "wit", options: ["pattern", "wit", "brink"] },
+      { q: "5. When you make something cold, you _____ it.", a: "chill", options: ["conquer", "pattern", "chill"] },
+      { q: "6. Something _____ is full of life.", a: "vibrant", options: ["actual", "vibrant", "fortunate"] },
+      { q: "7. If you are _____, you have good luck.", a: "fortunate", options: ["actual", "fortunate", "vibrant"] },
+      { q: "8. To overcome a problem is to _____ it.", a: "conquer", options: ["conquer", "chill", "intend"] },
+      { q: "9. A very angry person might show _____ .", a: "fury", options: ["brink", "pattern", "fury"] },
+      { q: "10. To _____ to complete a project is to plan to finish it.", a: "intend", options: ["chill", "conquer", "intend"] }
+    ];
+
+    let current = 0;
+    let score = 0;
+    let answered = Array(quizData.length).fill(false);
+
+    function showQuestion() {
+      const q = quizData[current];
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = `<div class="question">${q.q}</div>` + q.options.map((opt, i) =>
+        `<label class="option"><input type="radio" name="q" value="${opt}"> ${opt}</label>`).join('') +
+        `<div id="feedback" class="feedback"></div>`;
+    }
+
+    function submitAnswer() {
+      const selected = document.querySelector('input[name="q"]:checked');
+      const feedback = document.getElementById("feedback");
+      if (!selected) {
+        feedback.textContent = "Please select an answer.";
+        feedback.style.color = "orange";
+        return;
+      }
+      const answer = selected.value;
+      const correct = quizData[current].a;
+
+      if (answer === correct) {
+        feedback.textContent = "✅ Correct!";
+        feedback.style.color = "green";
+        if (!answered[current]) {
+          score++;
+          answered[current] = true;
+        }
+      } else {
+        feedback.textContent = `❌ Incorrect. Correct answer: ${correct}`;
+        feedback.style.color = "red";
+      }
+
+      if (current === quizData.length - 1) {
+        document.getElementById("score").innerHTML = `<strong>Quiz Over! Your score: ${score}/${quizData.length}</strong>`;
+      }
+    }
+
+    function nextQuestion() {
+      if (current < quizData.length - 1) {
+        current++;
+        showQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (current > 0) {
+        current--;
+        showQuestion();
+      }
+    }
+
+    function restartQuiz() {
+      current = 0;
+      score = 0;
+      answered = Array(quizData.length).fill(false);
+      document.getElementById("score").innerHTML = "";
+      showQuestion();
+    }
+
+    showQuestion();
+
+    showQuestion();
+  </script>
+
+  <div style="text-align: center; margin: 40px 0;">
+    <a href="GreenMenu.html" style="font-size: 18px; color: #2e7d32; text-decoration: none; border: 2px solid #2e7d32; padding: 10px 20px; border-radius: 6px;">🏠 Go to Menu</a>
+  </div>
+</body>
+</html>

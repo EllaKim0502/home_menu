@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vocabulary Workshop Green - Unit 1</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      font-size: 22px;
+      margin: 0;
+      padding: 0;
+      background: #fefefe;
+    }
+    .quiz-container {
+      width: 100%;
+      max-width: 700px;
+      background: #fff;
+      padding: 10px;
+      margin: 0 auto;
+      margin-top: 30px;
+      border-radius: 10px;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .option {
+      margin-bottom: 12px;
+      display: block;
+    }
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .navigation {
+      margin-top: 20px;
+      text-align: center;
+    }
+    button {
+      font-size: 18px;
+      padding: 10px 15px;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2 style="font-size: 26px; text-align: center; margin: 0 0 50px 0;">Vocabulary Workshop Green – Unit 1</h2>
+    <div id="quiz"></div>
+    <div class="navigation">
+      <button onclick="prevQuestion()">Previous</button>
+      <button onclick="submitAnswer()">Submit</button>
+      <button onclick="nextQuestion()">Next</button>
+      <button onclick="restartQuiz()">Start Over</button>
+    </div>
+    <div id="score" style="margin-top:20px; text-align: center;"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      { q: "1. If you _____ tacos to pizza, you like tacos better.", a: "prefer", options: ["force", "prefer", "trace"] },
+      { q: "2. A soccer field has a ______ on each end.", a: "goal", options: ["goal", "trace", "patient"] },
+      { q: "3. When many people have the same name, the name is ____.", a: "common", options: ["common", "faint", "firm"] },
+      { q: "4. If your parents ______ you to stay up late, they give you permission to do so.", a: "allow", options: ["trace", "force", "allow"] },
+      { q: "5. A ______ person may feel angry because of a bad experience.", a: "bitter", options: ["firm", "bitter", "common"] },
+      { q: "6. To be ______ is to be calm and understanding,", a: "patient", options: ["bitter", "faint", "patient"] },
+      { q: "7. _______ pencil marks are light and difficult to see.", a: "faint", options: ["faint", "patient", "firm"] },
+      { q: "8. If you _______ open a box, you use your strength to get inside it.", a: "force", options: ["force", "faint", "trace"] },
+      { q: "9. About twenty-five people work at the _______", a: "firm", options: ["firm", "goal", "patient"] },
+      { q: "10. When you ______ a design, you draw over its lines on another sheet of paper.", a: "trace", options: ["allow", "trace", "prefer"] }
+    ];
+
+    let current = 0;
+    let score = 0;
+    let answered = Array(quizData.length).fill(false);
+
+    function showQuestion() {
+      const q = quizData[current];
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = `<div class="question">${q.q}</div>` + q.options.map((opt, i) =>
+        `<label class="option"><input type="radio" name="q" value="${opt}"> ${opt}</label>`).join('') +
+        `<div id="feedback" class="feedback"></div>`;
+    }
+
+    function submitAnswer() {
+      const selected = document.querySelector('input[name="q"]:checked');
+      const feedback = document.getElementById("feedback");
+      if (!selected) {
+        feedback.textContent = "Please select an answer.";
+        feedback.style.color = "orange";
+        return;
+      }
+      const answer = selected.value;
+      const correct = quizData[current].a;
+
+      if (answer === correct) {
+        feedback.textContent = "✅ Correct!";
+        feedback.style.color = "green";
+        if (!answered[current]) {
+          score++;
+          answered[current] = true;
+        }
+      } else {
+        feedback.textContent = `❌ Incorrect. Correct answer: ${correct}`;
+        feedback.style.color = "red";
+      }
+
+      if (current === quizData.length - 1) {
+        document.getElementById("score").innerHTML = `<strong>Quiz Over! Your score: ${score}/${quizData.length}</strong>`;
+      }
+    }
+
+    function nextQuestion() {
+      if (current < quizData.length - 1) {
+        current++;
+        showQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (current > 0) {
+        current--;
+        showQuestion();
+      }
+    }
+
+    function restartQuiz() {
+      current = 0;
+      score = 0;
+      answered = Array(quizData.length).fill(false);
+      document.getElementById("score").innerHTML = "";
+      showQuestion();
+    }
+
+    showQuestion();
+
+    showQuestion();
+  </script>
+
+  <div style="text-align: center; margin: 40px 0;">
+    <a href="GreenMenu.html" style="font-size: 18px; color: #2e7d32; text-decoration: none; border: 2px solid #2e7d32; padding: 10px 20px; border-radius: 6px;">🏠 Go to Menu</a>
+  </div>
+</body>
+</html>

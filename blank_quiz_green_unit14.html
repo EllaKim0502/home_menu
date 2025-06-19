@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vocabulary Workshop Green - Unit 14</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      font-size: 22px;
+      margin: 0;
+      padding: 0;
+      background: #fefefe;
+    }
+    .quiz-container {
+      width: 100%;
+      max-width: 700px;
+      background: #fff;
+      padding: 10px;
+      margin: 0 auto;
+      margin-top: 30px;
+      border-radius: 10px;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .option {
+      margin-bottom: 12px;
+      display: block;
+    }
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .navigation {
+      margin-top: 20px;
+      text-align: center;
+    }
+    button {
+      font-size: 18px;
+      padding: 10px 15px;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2 style="font-size: 26px; text-align: center; margin: 0 0 50px 0;">Vocabulary Workshop Green – Unit 14</h2>
+    <div id="quiz"></div>
+    <div class="navigation">
+      <button onclick="prevQuestion()">Previous</button>
+      <button onclick="submitAnswer()">Submit</button>
+      <button onclick="nextQuestion()">Next</button>
+      <button onclick="restartQuiz()">Start Over</button>
+    </div>
+    <div id="score" style="margin-top:20px; text-align: center;"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      { q: "1. To _____ is to make a guess about what will happen.", a: "predict", options: ["kindle", "stunt", "predict"] },
+      { q: "2. Something _____ might be described as excellent.", a: "admirable", options: ["automatic", "distant", "admirable"] },
+      { q: "3. A feat that displays much skill is a(n) _____ .", a: "stunt", options: ["devotion", "stunt", "exhaust"] },
+      { q: "4. Something far away is _____ .", a: "distant", options: ["admirable", "automatic", "distant"] },
+      { q: "5. A(n) _____ reaction is one that happens without thought.", a: "automatic", options: ["admirable", "dreary", "automatic"] },
+      { q: "6. To show _____ is to show loyalty.", a: "devotion", options: ["devotion", "separation", "stunt"] },
+      { q: "7. A(n) _____ from people might also be a detachment from them.", a: "separation", options: ["exhaust", "devotion", "separation"] },
+      { q: "8. A(n) _____ afternoon can also be considered gloomy.", a: "dreary", options: ["distant", "dreary", "automatic"] },
+      { q: "9. To light a fire is to _____ it.", a: "kindle", options: ["predict", "kindle", "stunt"] },
+      { q: "10. The fumes that come from an engine are called _____ .", a: "exhaust", options: ["separation", "material", "exhaust"] }
+    ];
+
+    let current = 0;
+    let score = 0;
+    let answered = Array(quizData.length).fill(false);
+
+    function showQuestion() {
+      const q = quizData[current];
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = `<div class="question">${q.q}</div>` + q.options.map((opt, i) =>
+        `<label class="option"><input type="radio" name="q" value="${opt}"> ${opt}</label>`).join('') +
+        `<div id="feedback" class="feedback"></div>`;
+    }
+
+    function submitAnswer() {
+      const selected = document.querySelector('input[name="q"]:checked');
+      const feedback = document.getElementById("feedback");
+      if (!selected) {
+        feedback.textContent = "Please select an answer.";
+        feedback.style.color = "orange";
+        return;
+      }
+      const answer = selected.value;
+      const correct = quizData[current].a;
+
+      if (answer === correct) {
+        feedback.textContent = "✅ Correct!";
+        feedback.style.color = "green";
+        if (!answered[current]) {
+          score++;
+          answered[current] = true;
+        }
+      } else {
+        feedback.textContent = `❌ Incorrect. Correct answer: ${correct}`;
+        feedback.style.color = "red";
+      }
+
+      if (current === quizData.length - 1) {
+        document.getElementById("score").innerHTML = `<strong>Quiz Over! Your score: ${score}/${quizData.length}</strong>`;
+      }
+    }
+
+    function nextQuestion() {
+      if (current < quizData.length - 1) {
+        current++;
+        showQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (current > 0) {
+        current--;
+        showQuestion();
+      }
+    }
+
+    function restartQuiz() {
+      current = 0;
+      score = 0;
+      answered = Array(quizData.length).fill(false);
+      document.getElementById("score").innerHTML = "";
+      showQuestion();
+    }
+
+    showQuestion();
+
+    showQuestion();
+  </script>
+
+  <div style="text-align: center; margin: 40px 0;">
+    <a href="GreenMenu.html" style="font-size: 18px; color: #2e7d32; text-decoration: none; border: 2px solid #2e7d32; padding: 10px 20px; border-radius: 6px;">🏠 Go to Menu</a>
+  </div>
+</body>
+</html>
