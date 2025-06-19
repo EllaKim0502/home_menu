@@ -18,8 +18,9 @@
     }
     .menu-buttons {
       display: flex;
-      justify-content: center;
-      gap: 40px;
+      flex-direction: column; /* changed to vertical layout */
+      align-items: center;
+      gap: 20px;
     }
     .menu-buttons button {
       padding: 20px 30px;
@@ -29,6 +30,7 @@
       cursor: pointer;
       color: white;
       transition: background-color 0.3s;
+      width: 300px;
     }
     .purple {
       background-color: #ab47bc;
@@ -47,9 +49,12 @@
 <body>
   <h1>Vocabulary Workshop - Home</h1>
   <div class="menu-buttons">
-    <button class="purple" onclick="location.href='PurpleMenu.html'">Vocabulary Workshop Purple</button>
-     <button class="purple" onclick="location.href='PurpleMenu_Word_Quiz.html'">Purple - Word Quiz</button>
-    <button class="green" onclick="location.href='GreenMenu.html'">Vocabulary Workshop Green</button>
+    <button class="purple" onclick="location.href='PurpleMenu.html'">Purple - Blank Quiz</button>
+        <button class="purple" onclick="location.href='PurpleMenu_Word_Quiz.html'">Purple - Word Quiz</button>
+    <button class="green" onclick="location.href='GreenMenu.html'">Green - Blank Quiz</button>
   </div>
 </body>
 </html>
+
+
+
