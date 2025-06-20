@@ -1,61 +1,70 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Purple Menu</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f8f8ff;
-      padding: 30px;
+      padding: 20px;
+      background-color: #f9f9ff;
       text-align: center;
     }
     h1 {
-      color: #4b0082;
+      margin-bottom: 30px;
     }
-    .button-grid {
+    .menu-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 15px;
       max-width: 600px;
-      margin: 30px auto;
+      margin: auto;
     }
-    .unit-button {
-      background-color: #9370db;
-      color: white;
+    .menu-button {
+      font-size: 20px;
       padding: 15px;
-      font-size: 16px;
+      background-color: #7851a9;
+      color: white;
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
+      transition: background-color 0.3s ease;
     }
-    .unit-button:hover {
-      background-color: #7b68ee;
+    .menu-button:hover {
+      background-color: #5a3d82;
+    }
+    .home-button {
+      margin-top: 40px;
+      font-size: 20px;
+      padding: 15px;
+      background-color: pink;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <h1>Vocabulary Workshop Purple - Menu</h1>
-  <div class="button-grid">
-    <a class="unit-button" href="quiz_word_purple_unit_1.html">Unit 1</a>
-    <a class="unit-button" href="quiz_word_purple_unit_2.html">Unit 2</a>
-    <a class="unit-button" href="quiz_word_purple_unit_3.html">Unit 3</a>
-    <a class="unit-button" href="quiz_word_purple_unit_4.html">Unit 4</a>
-    <a class="unit-button" href="quiz_word_purple_unit_5.html">Unit 5</a>
-    <a class="unit-button" href="quiz_word_purple_unit_6.html">Unit 6</a>
-    <a class="unit-button" href="quiz_word_purple_unit_7.html">Unit 7</a>
-    <a class="unit-button" href="quiz_word_purple_unit_8.html">Unit 8</a>
-    <a class="unit-button" href="quiz_word_purple_unit_9.html">Unit 9</a>
-    <a class="unit-button" href="quiz_word_purple_unit_10.html">Unit 10</a>
-    <a class="unit-button" href="quiz_word_purple_unit_11.html">Unit 11</a>
-    <a class="unit-button" href="quiz_word_purple_unit_12.html">Unit 12</a>
-    <a class="unit-button" href="quiz_word_purple_unit_13.html">Unit 13</a>
-    <a class="unit-button" href="quiz_word_purple_unit_14.html">Unit 14</a>
+  <h1>Vocabulary Workshop Purple – Word Quiz Menu</h1>
+  <div class="menu-grid">
+    <button class="menu-button" onclick="location.href='quiz_word_purple_unit_1.html'">Unit 1</button>
+    <button class="menu-button" onclick="location.href='quiz_word_purple_unit_2.html'">Unit 2</button>
+    <button class="menu-button" onclick="location.href='quiz_word_purple_unit_3.html'">Unit 3</button>
+    <button class="menu-button" onclick="location.href='quiz_word_purple_unit_4.html'">Unit 4</button>
+    <button class="menu-button" onclick="location.href='quiz_word_purple_unit_5.html'">Unit 5</button>
+    <button class="menu-button" onclick="location.href='quiz_word_purple_unit_6.html'">Unit 6</button>
+    <button class="menu-button" onclick="location.href='quiz_word_purple_unit_7.html'">Unit 7</button>
+    <button class="menu-button" onclick="location.href='quiz_word_purple_unit_8.html'">Unit 8</button>
+    <button class="menu-button" onclick="location.href='quiz_word_purple_unit_9.html'">Unit 9</button>
+    <button class="menu-button" onclick="location.href='quiz_word_purple_unit_10.html'">Unit 10</button>
+    <button class="menu-button" onclick="location.href='quiz_word_purple_unit_11.html'">Unit 11</button>
+    <button class="menu-button" onclick="location.href='quiz_word_purple_unit_12.html'">Unit 12</button>
+    <button class="menu-button" onclick="location.href='quiz_word_purple_unit_13.html'">Unit 13</button>
+    <button class="menu-button" onclick="location.href='quiz_word_purple_unit_14.html'">Unit 14</button>
   </div>
-<button onclick="location.href='Index.html'" style="margin-top: 20px; padding: 10px 20px; font-size: 16px; background-color: #9c27b0; border: none; border-radius: 6px; color: white; cursor: pointer;">Home</button>
-
+  <button class="home-button" onclick="location.href='index.html'">🏠 Home</button>
 </body>
 </html>
+
