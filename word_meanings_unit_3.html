@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Word Meanings – Plug In Your New List</title>
+  <style>
+    body {font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; padding: 20px; line-height: 1.9; max-width: 960px; margin: auto; font-size: 20px; background:#0b1020; color:#e8ebff}
+    h2,h3{margin:0 0 8px}
+    h2{font-size:28px}
+    h3{margin-top: 18px; color:#a9b2d6}
+    .button-group { display: flex; gap: 10px; flex-wrap:wrap; margin-top: 12px }
+    button { font-size: 16px; padding: 10px 16px; border-radius:12px; border:1px solid #2a3577; background:#11173a; color:#e8ebff; cursor:pointer }
+    button.primary{background:linear-gradient(180deg,#3757ff,#2c45cc); border-color:#2840c2}
+    .headword { background-color: #ffea00; color:#111; font-weight: 800; padding:0 4px; border-radius:6px }
+    .sentence { display: block; margin: 6px 0 }
+    .highlight { background-color: #86c5ff33 }
+    .toolbar{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin: 14px 0}
+    textarea, select, input{background:#0f1430; color:#e8ebff; border:1px solid #28346d; border-radius:12px; padding:10px}
+    textarea{width:100%; min-height:160px; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size:14px}
+    .muted{color:#a9b2d6; font-size:14px}
+    .chip{display:inline-block; padding:2px 8px; border-radius:999px; background:#1a2250; border:1px solid #2a3577; font-size:12px; margin-right:6px}
+    .hr{height:1px; background:#242d5a; margin:14px 0}
+    .row{display:grid; grid-template-columns: 1fr; gap:16px}
+    @media (min-width:960px){ .row{grid-template-columns: 1fr 1fr} }
+    .card{background:#131a33; border:1px solid #1e2547; border-radius:16px; padding:14px}
+    .titlebar{display:flex; gap:10px; align-items:center}
+  </style>
+</head>
+<body>
+  <div class="titlebar">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 7a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7Z" stroke="#7aa2ff" stroke-width="1.4"/><path d="M8 9h8M8 12h8M8 15h6" stroke="#a9b2d6" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <div>
+      <h2>Vocabulary Workshop Purple – UNIT 3</h2>
+      <div class="muted">Paste your new words later. This file will render definitions + examples, read them aloud, and let you play an MP3.</div>
+    </div>
+  </div>
+
+  <div class="button-group">
+    <button id="readBtn" onclick="toggleReading()">▶️ Start Reading</button>
+    <audio id="audio" src="3-What-Makes-Waves.mp3"></audio>
+    <button id="mp3Btn" onclick="toggleAudio()">🔊 Play MP3</button>
+    <button onclick="window.open('https://www.sadlierconnect.com/anonymous/product/@vw21?productId=1057&programId=380&subjectId=1&gradeId=5&programTOCId=6615&programSeriesId=117&hash=dW5kZWZpbmVk','_blank')">🌐 Visit the Site</button>
+    <span class="muted">Rate: <input id="rate" type="range" min="0.6" max="1.4" value="1" step="0.1" /> <span id="rateVal">1.0×</span></span>
+    <span class="muted">Voice: <select id="voiceSel"></select></span>
+  </div>
+
+  <div class="row" style="margin-top:14px">
+    <div class="card">
+      <div class="muted">Paste list as JSON <span class="chip">or</span> pipe‑lines. Then click <b>Load List</b> →</div>
+      <textarea id="source" placeholder='JSON example:
+[
+  {"word":"bench","pos":"noun","def":"A bench is a long seat for a few people to sit on.","example":"On each side of the picnic table is a wooden bench."},
+  {"word":"cross","pos":"verb","def":"When you cross, you go from one side to the other.","example":"Look both ways when you cross the street."}
+]
+
+Pipe example (one per line):
+bench | noun | A bench is a long seat for a few people to sit on. | On each side of the picnic table is a wooden bench.'></textarea>
+      <div class="toolbar">
+        <button class="primary" id="btnLoad">Load List</button>
+        <button id="btnSample">Insert Unit 3 as Pipes</button>
+        <button id="btnClear">Clear</button>
+        <button id="btnExport">Export JSON</button>
+        <span class="muted" id="count">0 sentences</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Word Meanings</h3>
+      <div id="content"></div>
+    </div>
+  </div>
+
+  <div class="hr"></div>
+  <div class="muted">Tip: After you give me the new list, I can paste it for you here and return a ready‑to‑print HTML.</div>
+
+<script>
+  // === 1) DATA INPUT ===
+  // You will paste a NEW list later. For now, we'll provide a sample Unit 2.
+  // Each entry: { word, pos, def, example }
+  let wordItems = [
+    { "word": "beach", "pos": "noun", "def": "A beach is land near the water. It is usually sandy.", "example": "The children looked for shells along the beach." },
+    { "word": "center", "pos": "noun", "def": "A center is a place that is in the middle of something.", "example": "My mom put the flowers in the center of the table." },
+    { "word": "finally", "pos": "adverb", "def": "Finally means at last.", "example": "We finally finished our homework." },
+    { "word": "idea", "pos": "noun", "def": "An idea is a thought or a plan. It is something that you think of.", "example": "Grandma had a great idea for Dad’s birthday present." },
+    { "word": "ocean", "pos": "noun", "def": "The ocean is a very large area of salt water. It covers almost three quarters of Earth.", "example": "Ships sail across the big, blue ocean." },
+    { "word": "seashell", "pos": "noun", "def": "A seashell is the shell of a sea animal such as an oyster or a clam.", "example": "The outside of the large seashell feels rough." },
+    { "word": "stack", "pos": "noun", "def": "A stack is a neat pile of something.", "example": "I ate a tall stack of pancakes." },
+    { "word": "stack", "pos": "verb", "def": "When you stack things, you pile them one on top of another.", "example": "Please stack the books neatly on my desk." },
+    { "word": "tiny", "pos": "adjective", "def": "If something is tiny, it is very small.", "example": "A tiny drop of water dripped from the bottle." },
+    { "word": "wave", "pos": "verb", "def": "When you wave, you move your hand back and forth.", "example": "I wave to my friend." },
+    { "word": "wave", "pos": "noun", "def": "A wave looks like a long bump moving through the water in a lake or an ocean.", "example": "A huge wave crashed onto the beach." },
+    { "word": "wonder", "pos": "verb", "def": "When you wonder about something, you are curious about it. You want to learn about it.", "example": "I wonder why the sky is blue." }
+  ];
+
+  // === 2) RENDERING ===
+  const contentDiv = document.getElementById('content');
+  const countSpan = document.getElementById('count');
+  let sentences = []; // [{id,text}]
+
+  function renderList(items){
+    contentDiv.innerHTML = '';
+    sentences = [];
+    let idx = 0;
+
+    items.forEach((item, i) => {
+      const def = document.createElement('span');
+      def.className = 'sentence';
+      def.id = `s${idx}`;
+      def.innerHTML = `${i + 1}. <span class="headword">${escapeHtml(item.word)}</span> (${escapeHtml(item.pos)}) ${escapeHtml(item.def)}`;
+      contentDiv.appendChild(def);
+      sentences.push({ id: def.id, text: `${item.word}. ${item.def}` });
+      idx++;
+
+      const ex = document.createElement('span');
+      ex.className = 'sentence';
+      ex.id = `s${idx}`;
+      const rx = new RegExp(`(${escapeRegExp(item.word)})`, 'gi');
+      ex.innerHTML = escapeHtml(item.example).replace(rx, '<strong>$1</strong>');
+      contentDiv.appendChild(ex);
+      sentences.push({ id: ex.id, text: item.example });
+      idx++;
+    });
+
+    countSpan.textContent = sentences.length + ' sentences';
+  }
+
+  // === 3) TEXT-TO-SPEECH ===
+  let current = 0;
+  let isReading = false;
+  let voices = [];
+
+  function populateVoices(){
+    voices = window.speechSynthesis.getVoices();
+    const sel = document.getElementById('voiceSel');
+    const langPref = ['en-US','en-GB','en-AU','en-CA'];
+    sel.innerHTML = '';
+    voices.filter(v=>langPref.some(l=>v.lang.startsWith(l))).forEach((v,i)=>{
+      const opt = document.createElement('option');
+      opt.value = v.name; opt.textContent = `${v.name} (${v.lang})`;
+      sel.appendChild(opt);
+    });
+    // Try to preselect a familiar voice if present
+    const preferredNames = ['Samantha','Google US English','Microsoft Aria Online (Natural)'];
+    const match = preferredNames.find(n=>[...sel.options].some(o=>o.value.includes(n)));
+    if(match){
+      [...sel.options].forEach(o=>{ if(o.value.includes(match)) sel.value = o.value });
+    }
+  }
+
+  function speakSentence(index){
+    const synth = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(sentences[index].text);
+    const sel = document.getElementById('voiceSel');
+    const rate = Number(document.getElementById('rate').value);
+
+    const v = voices.find(v => v.name === sel.value) || voices.find(v=>v.lang && v.lang.startsWith('en'));
+    if(v) utterance.voice = v;
+    utterance.rate = rate;
+
+    utterance.onstart = () => {
+      document.getElementById(sentences[index].id).classList.add('highlight');
+    };
+    utterance.onend = () => {
+      document.getElementById(sentences[index].id).classList.remove('highlight');
+      current++;
+      if (isReading && current < sentences.length) {
+        speakSentence(current);
+      } else {
+        isReading = false;
+        document.getElementById('readBtn').textContent = '▶️ Start Reading';
+      }
+    };
+
+    synth.speak(utterance);
+  }
+
+  function toggleReading(){
+    const synth = window.speechSynthesis;
+    if (isReading) {
+      synth.cancel();
+      isReading = false;
+      document.getElementById('readBtn').textContent = '▶️ Start Reading';
+    } else {
+      current = 0;
+      isReading = true;
+      document.getElementById('readBtn').textContent = '⏹️ Stop Reading';
+      speakSentence(current);
+    }
+  }
+  window.toggleReading = toggleReading; // expose to button
+
+  function toggleAudio(){
+    const audio = document.getElementById('audio');
+    const mp3Btn = document.getElementById('mp3Btn');
+    if (audio.paused) {
+      audio.play();
+      mp3Btn.textContent = '⏹️ Stop MP3';
+    } else {
+      audio.pause();
+      audio.currentTime = 0;
+      mp3Btn.textContent = '🔊 Play MP3';
+    }
+  }
+  window.toggleAudio = toggleAudio; // expose to button
+
+  // === 4) INPUT PARSERS & UTIL ===
+  function parseInput(text){
+    text = text.trim();
+    if(!text) return [];
+    try{ // JSON first
+      const obj = JSON.parse(text);
+      if(Array.isArray(obj)) return sanitize(obj);
+    }catch(e){}
+    // pipe format: word | pos | def | example
+    const lines = text.split(/
++/).map(s=>s.trim()).filter(Boolean);
+    return sanitize(lines.map(line=>{
+      const [word,pos,def,example] = line.split('|').map(s=> (s||'').trim());
+      return {word,pos,def,example};
+    }));
+  }
+
+  function sanitize(items){
+    return items.map(x=>({
+      word: (x.word||'').trim(),
+      pos: (x.pos||'').trim(),
+      def: (x.def||x.definition||'').trim(),
+      example: (x.example||x.ex||'').trim()
+    })).filter(x=>x.word && x.def && x.example);
+  }
+
+  function escapeHtml(str){
+    return (str||'').replace(/[&<>"']/g, s=>({"&":"&amp;","<":"&lt;",
+      ">":"&gt;","\"":"&quot;","'":"&#39;"}[s]));
+  }
+  function escapeRegExp(str){
+    return (str||'').replace(/[.*+?^${}()|[\]\]/g, '\$&');
+  }
+
+  // === 5) UI WIRES ===
+  document.getElementById('btnLoad').addEventListener('click',()=>{
+    const txt = document.getElementById('source').value;
+    const data = parseInput(txt);
+    if(data.length){ wordItems = data; }
+    renderList(wordItems);
+  });
+  document.getElementById('btnClear').addEventListener('click',()=>{
+    document.getElementById('source').value='';
+  });
+  document.getElementById('btnSample').addEventListener('click',()=>{
+    document.getElementById('source').value = wordItems.map(x=>`${x.word} | ${x.pos} | ${x.def} | ${x.example}`).join('
+');
+  });
+  document.getElementById('btnExport').addEventListener('click',()=>{
+    const blob = new Blob([JSON.stringify(wordItems,null,2)],{type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'unit-words.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+
+  document.getElementById('rate').addEventListener('input', (e)=>{
+    document.getElementById('rateVal').textContent = Number(e.target.value).toFixed(1) + '×';
+  });
+
+  if('speechSynthesis' in window){
+    populateVoices();
+    window.speechSynthesis.onvoiceschanged = populateVoices;
+  }
+
+  // First render with the sample data
+  renderList(wordItems);
+</script>
+</body>
+</html>
